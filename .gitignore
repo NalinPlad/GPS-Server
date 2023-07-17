@@ -1,3 +1,5 @@
 cert.pem
 *.pem
 DS_Store
+*.cert
+*.key

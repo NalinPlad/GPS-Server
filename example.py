@@ -2,7 +2,7 @@
 import http.server, ssl, socketserver, pyqrcode
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_cert_chain("cert.pem")
+context.load_cert_chain("dosenet.cert", "dosenet.key")
 server_address = ("0.0.0.0", 443)
 handler = http.server.SimpleHTTPRequestHandler
 
