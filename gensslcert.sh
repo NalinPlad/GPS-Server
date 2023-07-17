@@ -1,5 +1,5 @@
-apt-get -qq -y install openssl;
-openssl req \
+sudo apt-get -qq -y install openssl;
+sudo openssl req \
     -new \
     -newkey rsa:4096 \
     -days 365 \
