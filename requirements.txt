@@ -1,2 +1,2 @@
-pyqrcode==1.2.1
+qrcode==7.4.2
 websockets==10.3

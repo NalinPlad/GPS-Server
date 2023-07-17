@@ -1,5 +1,5 @@
 # Define HTTPS Server
-import http.server, ssl, socketserver, pyqrcode
+import http.server, ssl, socketserver, qrcode
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain("dosenet.cert", "dosenet.key")
@@ -23,14 +23,23 @@ async def main():
         await asyncio.Future()  # run forever
 
 
+# Get ip addr
+import socket
+hostname=socket.gethostname()
+IPAddr=socket.gethostbyname(hostname)
 
+# Print QR Code optimistically
+url = f"https://{IPAddr}/www/"
+qr = qrcode.QRCode()
+qr.add_data(url)
+qr.print_ascii()
+print(url)
 
 
 # Run Websocket Server (in background)
 import threading
 thread = threading.Thread(target=asyncio.run, args=(main(),))
 thread.start()
-
 
 # Run HTTPS Server
 with socketserver.TCPServer(server_address, handler) as httpd:

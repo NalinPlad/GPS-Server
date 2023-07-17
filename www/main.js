@@ -16,18 +16,18 @@ function msToTime(ms) {
 let ind = 1;
 function logData(msg,color) {
   const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: true});
-  status.innerHTML += `<span style="color:grey;font-size:5pt"> ${time}</span><br><span style="color:${color};display:flex;align-items:center"><span style="color:grey;font-size:5pt;margin-right:0.5rem">[${ind}]</span>${msg}</span><br>`;
+  status.innerHTML += `<span style="color:grey;font-size:5pt;overflow:scroll"> ${time}</span><br><span style="color:${color};display:flex;align-items:center;overflow:scroll"><span style="color:grey;font-size:5pt;margin-right:0.5rem">[${ind}]</span>${msg}</span><br>`;
   ind++;
 }
 
-logData(`Connected to server on host <b>${location.hostname}</b>`, "green");
+logData(`Connected to server on host ${location.hostname}`, "green");
 
 function initGeoLocation() {
   const startTimestamp = Date.now();
 
   function success(position) {
     const finishTimestamp = Date.now();
-    logData(`Geolocation Found. Took<b> ${msToTime(finishTimestamp-startTimestamp)}`, "green");
+    logData(`Geolocation Found. Took ${msToTime(finishTimestamp-startTimestamp)}`, "green");
   }
   function error() {
     logData(`Unable to retrieve your location. Maybe you denied permissions?`, "red");
