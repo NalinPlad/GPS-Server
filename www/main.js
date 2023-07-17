@@ -45,8 +45,29 @@ function initWebSocketConnection() {
   ws = new WebSocket("wss://" + location.hostname + ":8765");
 
   ws.onopen = function (event) {
-    ws.send("Hello Server!");
+    ws.send("clientping");
     logData(`WebSocket Connection Initialized`, "green");
+  }
+
+  ws.onmessage = function (event) {
+    if (event.data == "serverpong") {
+      logData(`WebSocket Connection is alive`, "green");
+    } else {
+      switch (event.data) {
+          case "start":
+            logData(`Starting Sending Data!`, "green");
+            setInterval(() => {
+              navigator.geolocation.getCurrentPosition((position) => {
+                ws.send(JSON.stringify({
+                  "lat": position.coords.latitude,
+                  "long": position.coords.longitude,
+                  "timestamp": position.timestamp
+                }));
+              }
+              );
+            }, 2000);
+      }
+    }
   }
 
   ws.onclose = function (event) {

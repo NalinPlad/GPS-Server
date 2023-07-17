@@ -12,20 +12,28 @@ handler = http.server.SimpleHTTPRequestHandler
 import asyncio
 from websockets.server import serve
 
-async def echo(websocket, path):
+async def resp(websocket, path):
     async for message in websocket:
         print(message)
-        await websocket.send(message)
+        if(message == "clientping"):
+            await websocket.send("serverpong")
+
+            # temporary send this json payload
+            await websocket.send("start")
+        # await websocket.send(message)
         
 
 async def main():
-    async with serve(echo, "0.0.0.0", 8765, ssl=context):
+    async with serve(resp, "0.0.0.0", 8765, ssl=context):
         await asyncio.Future()  # run forever
 
 
 # Get ip addr
 import socket
-IPAddr = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+IPAddr = s.getsockname()[0]
+s.close()
 
 # Print QR Code optimistically
 url = f"https://{IPAddr}/www/"
