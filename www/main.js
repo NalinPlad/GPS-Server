@@ -13,22 +13,30 @@ function msToTime(ms) {
 }
 
 
+let ind = 1;
+function logData(msg,color) {
+  const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: true});
+  status.innerHTML += `<span style="color:grey;font-size:5pt"> ${time}</span><br><span style="color:${color};display:flex;align-items:center"><span style="color:grey;font-size:5pt;margin-right:0.5rem">[${ind}]</span>${msg}</span><br>`;
+  ind++;
+}
+
+logData(`Connected to server on host <b>${location.hostname}</b>`, "green");
 
 function initGeoLocation() {
   const startTimestamp = Date.now();
 
   function success(position) {
     const finishTimestamp = Date.now();
-    status.innerHTML += `<span style="color:green">Geolocation API Initialized. Took <b>${msToTime(finishTimestamp-startTimestamp)}</b></span><br>`;
+    logData(`Geolocation Found. Took<b> ${msToTime(finishTimestamp-startTimestamp)}`, "green");
   }
   function error() {
-    status.innerHTML += `<span style="color:orange">Unable to retrieve your location. Maybe you denied permissions?</span><br>`;
+    logData(`Unable to retrieve your location. Maybe you denied permissions?`, "red");
   }
 
   if (!navigator.geolocation) {
-    status.innerHTML += `<span style="color:red">Geolocation is not supported by your browser</span><br>`;
+    logData(`Geolocation API is not supported by your browser`, "red");
   } else {
-    status.innerHTML += `<span style="color:orange">Locating…</span><br>`;
+    logData(`Locating...`, "orange");
     navigator.geolocation.getCurrentPosition(success, error);
   }
 }
@@ -38,11 +46,11 @@ function initWebSocketConnection() {
 
   ws.onopen = function (event) {
     ws.send("Hello Server!");
-    status.innerHTML += `<span style="color:green">WebSocket Connection Initialized</span><br>`;
+    logData(`WebSocket Connection Initialized`, "green");
   }
 
   ws.onclose = function (event) {
-    status.innerHTML += `<span style="color:red">WebSocket Connection Closed</span><br>`;
+    logData(`WebSocket Connection Closed`, "orange");
   }
 }
 
