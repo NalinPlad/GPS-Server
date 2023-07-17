@@ -65,7 +65,7 @@ function initWebSocketConnection() {
                 }));
               }
               );
-            }, 2000);
+            }, 500);
       }
     }
   }
