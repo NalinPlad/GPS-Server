@@ -1,2 +1,2 @@
 # GPS Server
-Internal service; These files are spawned by another process(GPS_DAQ)
+Archive of original GPS Service. This server was implemented in the [mobile dosenet firmware](https://github.com/NalinPlad/dosenet-raspberrypi-1) by me
